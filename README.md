@@ -11,7 +11,7 @@ This README file is written by Limeng Pu.
 3. networkx 2.2 +
 4. numpy 1.16.2 +
 
-# Biological Networks
+# Biology Networks
 
 1. Protein-protein interaction (PPI) network
 
