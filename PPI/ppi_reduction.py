@@ -30,6 +30,8 @@ def main(opt):
     Load master_edge_table and kinase information
     """
     master_edge_table = pd.read_csv('./master.edges')
+    all_proteins = list(set(master_edge_table['protein1'].tolist() + master_edge_table['protein1'].tolist()))
+
     raw_pathways = pd.read_csv('./gogo_bpo.groups')
     raw_pathways.rename(columns={'cluster_id':'pathways'}, inplace=True)
     kinases = []
@@ -40,6 +42,12 @@ def main(opt):
     Read the original node table
     """
     node_table_final = pd.read_csv(opt.i)
+    proteins = node_table_final['ensembl'].tolist()
+    diff = [x for x in proteins if x not in all_proteins]
+    if len(diff)>0:
+        print('Found proteins in node table that not in the master.edges provided. Please check!')
+        print(diff)
+        return None
     """
     Start the graph contraction
     """
