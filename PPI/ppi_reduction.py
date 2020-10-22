@@ -138,7 +138,7 @@ def main(opt):
     """
     Save stuff
     """
-    nx.write_gexf(GG, opt.o + '.gexf')
+    nx.write_gexf(GG,  '{}.gexf'.format(output_name))
     new_node_table.to_csv('reduced_{}.nodes'.format(output_name), index=False)
     new_edge_table.to_csv('reduced_{}.edges'.format(output_name), index=False)
     d1 = {'original':[], 'new':[]}
