@@ -6,10 +6,7 @@ This README file is written by Limeng Pu.
 
 # Dependencies
 
-1. Python 3
-2. pandas 0.25.1 +
-3. networkx 2.2 +
-4. numpy 1.16.2 +
+Change line 12 of the file accordingly then run `conda env create -f environment.yml`. 
 
 # Biology Networks
 
