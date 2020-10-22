@@ -1,4 +1,6 @@
-# Graph generation
+# Implementation Details
+
+## Graph generation
 
 The network is represented as a node table and an edge table. The node table takes the following format:
 
@@ -34,7 +36,7 @@ The graph generation process will integrate the node table and the edge table to
     <img width="460" height="460" src="./image/original_subgraph.png">
 </p>
     
-# Graph reduction
+## Graph reduction
 
 The graph reduction promotes topological diversity ,feature richness for each graph and lessens the computational cost in the learning stage. Without the reduction, the graph topology is the same for all graphs while the only difference lies in the node features. The reduction procedure relies heavily on the applications of the study since the reduction rules can vary drastically for different applications.
 
@@ -61,9 +63,14 @@ A flowchart of the procedure is presented in the figure below.
     <img src="./image/reduction_flow.png">
 </p>
 
+# Usage
+
+Run 
+<pre><code>python ppi_reduction.py --i ./example.nodes --o example</code></pre>
+
 The outputs:
 
-- `reduced_network.gexf` -- A graph representation of the network. Contains all the features (both nodes' and edges').
-- `reduced_node_table.csv` -- One extra feature will be produced to represent the reduction procedure. The kinase nodes will have a value of 2 while the virtual nodes will have a value of 0. And the non-kinase unreduced nodes will have a value of 1.
-- `reduced_edge_table.csv` -- Same format as the original edge table.
-- `reduction_records.csv` -- A record to keep track of every node's final destination in the reduction procedure.
+- `example.gexf` -- A graph representation of the network. Contains all the features (both nodes' and edges').
+- `reduced_example.nodes` -- One extra feature will be produced to represent the reduction procedure. The kinase nodes will have a value of 2 while the virtual nodes will have a value of 0. And the non-kinase unreduced nodes will have a value of 1.
+- `reduced_example.edges` -- Same format as the original edge table.
+- `reduced_example.records` -- A record to keep track of every node's final destination in the reduction procedure.
