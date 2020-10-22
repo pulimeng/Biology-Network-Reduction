@@ -1,5 +1,7 @@
 # Implementation Details
 
+The details of our reduction algorithm is provided here. Note that the reduction rules suits specifically for the GraphGR project (https://github.com/pulimeng/GraphGR). However, with some simple twist you can make your own reduction rules.
+
 ## Graph generation
 
 The network is represented as a node table and an edge table. The node table takes the following format:
@@ -11,7 +13,7 @@ The network is represented as a node table and an edge table. The node table tak
 | ... | ... | ... | ... | ... | ... |
 | ENSEMBLID_n | xn_1 | xn_2 | ... | xn_m |
 
-Note that we use the ensemble id as the node id for proteins. And please make sure to use some values to fill the missing values. An example of the node table is provided `example_node_table.csv`.
+Note that we use the ensemble id as the node id for proteins. And please make sure to use some values to fill the missing values. An example of the node table is provided `example.nodes`.
 
 The node table is the input table provided by the user. It contains any features you wish to use for your purpose. For example, in our study, the features contain binding affinity of the drug, gene expression, and disease association score. It is very important that node presented in the node table must be contained in the edge table, which is provided by us in this repo. Otherwise, the network will have an isolated node, where no information propagation occurs regarding such nodes. This makes such nodes useless in the learning process since there is no information exchange with any other nodes.
 
@@ -43,9 +45,9 @@ The graph reduction promotes topological diversity ,feature richness for each gr
 In this work, we employed three reduction rules that address the **protein "kinaseness"** since we focus our work on kinase inhibitors, **gene expressions**, and **gene ontology (biological process) similarity** between proteins. Based on such rules, the reduction is carried out by contracting edges (merging nodes), whose ending nodes (proteins) belong to the same **biological process group** AND have the same **gene expression** AND **neither of them are kinases**. Note that the **biological process group** is precomputed using _GOGO Score_ (https://github.com/zwang-bioinformatics/GOGO) and _Agglomerative Clustering_ (https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html).
 
 Following files are required for the reduction procedure:    
-- `master_edge_table.csv` -- ORIGINAL STRING PPI network. Preprocessed as aforementioned yet UNREDUCED. Provided.
-- `node_table.csv` -- The ORIGINAL node table with the format as aforementioned. Contains many features. **User needs to create and configure this file.** An example is provided as `example_node_table.csv`.
-- `bpo_groups.csv` -- Biological process groups for each protein in the graph. Provided.
+- `master.edges` -- ORIGINAL STRING PPI network. Preprocessed as aforementioned yet UNREDUCED. Provided.
+- `example.nodes` -- The ORIGINAL node table with the format as aforementioned. Contains many features. **User needs to create and configure this file.** An example is provided as `example_node_table.csv`.
+- `gogo_bpo.groups` -- Biological process groups for each protein in the graph. Provided.
 - `kinases.lst` -- A list of kinases in the graph. Provided.
 
 The reduction procedure performed in this example can be summarized as following steps.
