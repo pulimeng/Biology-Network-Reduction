@@ -1,6 +1,4 @@
-# Implementation Details
-
-## Graph generation
+# Graph generation
 
 The network is represented as a node table and an edge table. The node table takes the following format:
 
@@ -36,7 +34,7 @@ The graph generation process will integrate the node table and the edge table to
     <img width="460" height="460" src="./image/original_subgraph.png">
 </p>
     
-## Graph reduction
+# Graph reduction
 
 The graph reduction promotes topological diversity ,feature richness for each graph and lessens the computational cost in the learning stage. Without the reduction, the graph topology is the same for all graphs while the only difference lies in the node features. The reduction procedure relies heavily on the applications of the study since the reduction rules can vary drastically for different applications.
 
