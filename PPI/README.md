@@ -44,7 +44,7 @@
     
     Following files are required for the reduction procedure:    
     - `master_edge_table.csv` -- ORIGINAL STRING PPI network. Preprocessed as aforementioned yet UNREDUCED. Provided.
-    - `node_table.csv` -- The ORIGINAL node table with the format as aforementioned. Contains many features.
+    - `node_table.csv` -- The ORIGINAL node table with the format as aforementioned. Contains many features. **User need to configure this file**
     - `bpo_groups.csv` -- Biological process groups for each protein in the graph. Provided.
     - `kinases.lst` -- A list of kinases in the graph. Provided.
     
