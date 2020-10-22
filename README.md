@@ -4,7 +4,7 @@ This repo provides algorithms and examples for the network reduction for differe
 
 This README file is written by Limeng Pu.
 
-# Prerequisites
+# Dependencies
 
 1. Python 3
 2. pandas 0.25.1 +
