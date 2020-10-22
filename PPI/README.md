@@ -42,7 +42,7 @@ In this work, we employed three reduction rules that address the **protein "kina
 
 Following files are required for the reduction procedure:    
 - `master_edge_table.csv` -- ORIGINAL STRING PPI network. Preprocessed as aforementioned yet UNREDUCED. Provided.
-- `node_table.csv` -- The ORIGINAL node table with the format as aforementioned. Contains many features. **User need to configure this file**
+- `node_table.csv` -- The ORIGINAL node table with the format as aforementioned. Contains many features. **User needs to create and configure this file.** An example is provided as `example_node_table.csv`.
 - `bpo_groups.csv` -- Biological process groups for each protein in the graph. Provided.
 - `kinases.lst` -- A list of kinases in the graph. Provided.
 
