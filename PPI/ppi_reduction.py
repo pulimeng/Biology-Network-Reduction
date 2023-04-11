@@ -30,7 +30,7 @@ def main(opt):
     Load master_edge_table and kinase information
     """
     master_edge_table = pd.read_csv('./master.edges')
-    all_proteins = list(set(master_edge_table['protein1'].tolist() + master_edge_table['protein1'].tolist()))
+    all_proteins = list(set(master_edge_table['protein1'].tolist() + master_edge_table['protein2'].tolist()))
 
     raw_pathways = pd.read_csv('./gogo_bpo.groups')
     raw_pathways.rename(columns={'cluster_id':'pathways'}, inplace=True)
