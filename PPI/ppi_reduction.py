@@ -31,11 +31,10 @@ def main(opt):
     """
     master_edge_table = pd.read_csv('./master.edges')
     all_proteins = list(set(master_edge_table['protein1'].tolist() + master_edge_table['protein2'].tolist()))
-
     raw_pathways = pd.read_csv('./gogo_bpo.groups')
     raw_pathways.rename(columns={'cluster_id':'pathways'}, inplace=True)
     kinases = []
-    with open('../../../ski_data/kinases.lst','r') as f:
+    with open('./kinases.lst','r') as f:
         for item in f.readlines():
             kinases.append(item.replace('\n',''))
     """
@@ -45,13 +44,13 @@ def main(opt):
     proteins = node_table_final['ensembl'].tolist()
     diff = [x for x in proteins if x not in all_proteins]
     if len(diff)>0:
-        print('Found proteins in node table that not in the master.edges provided. Please check!')
+        print('Found {} proteins in node table that not in the master.edges provided. Please check!'.format(len(diff)))
         print(diff)
         return None
     """
-    Start the graph contraction
+    Start the graph reduction
     """
-    print('...start contraction')
+    print('...start reduction')
     new_edge_table = master_edge_table
     # add gene expressions information to edge_table
     ged = node_table_final[['ensembl', 'gene_exp']].to_dict('list')
@@ -78,7 +77,7 @@ def main(opt):
     Gs = [tmp_G.subgraph(c).copy() for c in nx.connected_components(tmp_G)]
     connected_Gs = [x for x in Gs if len(x.nodes) > 1]
     print('Number of connected subgraphs {}'.format(len(connected_Gs)))
-    # Actual contraction part
+    # Actual reduction part
     new_node_table = node_table_final.copy()
     d = {i:i for i in new_node_table['ensembl'].tolist()}
     ids = 0
@@ -90,10 +89,11 @@ def main(opt):
         tmp_row = new_node_table[new_node_table['ensembl'] == dest]
         idx = tmp_row.index[0]
         node_attrs = new_node_table[new_node_table['ensembl'].isin(nodes)]
-        medians = node_attrs.iloc[:,-4:-2].replace(0, np.nan).median() # can be max as well
-    #    maxs = node_attrs.iloc[:,-4:-1].replace(0, np.nan).max()
-        medians.fillna(0, inplace=True)
-        tmp_row.at[idx, ['disgenet_score', 'disease_score']] = medians.to_numpy()
+        tmp_disease_scores = node_attrs.iloc[:,-3].to_numpy()
+        medians = np.median(tmp_disease_scores[tmp_disease_scores!=0]) # can be max as well
+        if medians == np.nan:
+            medians = 0.0
+        tmp_row.at[idx, 'disease_score'] = medians
         tmp_row.at[idx, 'ensembl'] = 'v{}'.format(ids)
     
         for item in nodes:
@@ -116,7 +116,7 @@ def main(opt):
     new_edge_table1.drop_duplicates('check_string', inplace=True)
     new_edge_table1.drop('check_string', inplace=True, axis=1)
     # Replace NaN with 0 for disease scores
-    new_node_table.fillna({'disgenet_score':0, 'disease_score':0}, inplace=True)
+    new_node_table.fillna({'disease_score':0}, inplace=True)
     # Create new graph
     print('...creating new graphs')
     GG = nx.from_pandas_edgelist(new_edge_table, source='protein1', target='protein2',
@@ -153,8 +153,8 @@ def main(opt):
     for k,v in d.items():
         d1['original'].append(k)
         d1['new'].append(v)
-    contraction_record = pd.DataFrame(d1)
-    contraction_record.to_csv('reduced_{}.records'.format(output_name), index=False)
+    reduction_record = pd.DataFrame(d1)
+    reduction_record.to_csv('reduced_{}.records'.format(output_name), index=False)
     
     print(time.time() - s)
     
